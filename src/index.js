@@ -14,7 +14,14 @@ const config = {
   parent: "phaser-example",
   width: 800,
   height: 600,
-  scene: [StartGameScene]
+  physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: { y: 0 },
+            debug: false
+        }
+    },
+  scene: [Level4Scene]
 };
 
 const game = new Phaser.Game(config);
