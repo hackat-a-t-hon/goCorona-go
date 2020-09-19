@@ -77,10 +77,10 @@ export class Level1Scene extends Phaser.Scene {
     let mappy = this.add.tilemap('map')
     let terrain1 = mappy.addTilesetImage("hjm-plain_grass_patch-66","tiles");
     let terrain2 = mappy.addTilesetImage("desert_house_exterior_01","tiles");
-    let terrain3 = mappy.addTilesetImage("grass_water","tiles");
-    let terrain4 = mappy.addTilesetImage("Water Top","tiles");
-    let botLayer = mappy.createStaticLayer("Tile Layer 1",[terrain1,terrain2,terrain3,terrain4],0,0).setDepth(-1);
-    let topLayer = mappy.createStaticLayer("Tile Layer 2",[terrain1,terrain2,terrain3,terrain4],0,0).setDepth(0)
+    
+    let terrain3 = mappy.addTilesetImage("Water Top","tiles");
+    let botLayer = mappy.createStaticLayer("Tile Layer 1",[terrain1,terrain2,terrain3],0,0).setDepth(-1);
+    let topLayer = mappy.createStaticLayer("Tile Layer 2",[terrain1,terrain2,terrain3],0,0).setDepth(0)
     this.door = this.physics.add.image(700,590,'door').setScale(1.5)
     topLayer.setCollisionByProperty({collision:true})       
     this.physics.add.collider(this.player,button,this.collideWithButton,null,this)
