@@ -22,7 +22,7 @@ const config = {
             debug: false
         }
     },
-  scene: [Level4Scene]
+  scene: [Level1Scene]
 };
 
 const game = new Phaser.Game(config);
