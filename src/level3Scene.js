@@ -122,10 +122,10 @@ export class Level3Scene extends Phaser.Scene {
             repeat: Math.max(Math.floor(Math.random()*4) + 1, 3),
             setXY: {x: -50, y:20, stepY: Math.min(Math.random()*200,100)}
         })
-
+     
         this.killers.children.iterate(function(child){
             child.setBounceX(Phaser.Math.FloatBetween(0.5,0.9))
-            child.setScale(0.5)
+            child.setScale( Math.max(Math.random() - 0.2),0.5)
             // child.body.collideWorldBounds=true;
         })
 
@@ -203,11 +203,13 @@ export class Level3Scene extends Phaser.Scene {
                 t.killers = t.physics.add.group({
                     key: 'killer',
                     repeat: Math.max(Math.floor(Math.random()*5) + 1, 3),
-                    setXY: {x: -50, y:20, stepY: Math.min(Math.random()*400,200)},
-       
+                    setXY: {x: -50, y:10, stepY: Math.min(Math.random()*500,300)},
+                    setScale: {
+                        x: Math.random(),y: Math.random()
+                    }
                 })
-                child.setBounceX(Phaser.Math.FloatBetween(0.5,0.9))
-                child.setScale(0.5)
+                // child.setBounceX(Phaser.Math.FloatBetween(0.5,0.9))
+                // child.setScale(0.5)
                 t.physics.add.overlap(t.player, t.killers, t.killerKissedMe, null, t)
     
                 // child.body.collideWorldBounds=true;
