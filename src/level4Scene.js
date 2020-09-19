@@ -97,8 +97,27 @@ export class Level4Scene extends Phaser.Scene {
         button.body.immovable = true
         this.cursors = this.input.keyboard.createCursorKeys();
         
-    }
+        //NPC STUFF
+        this.npc1= this.physics.add.sprite(140,120,"hero")
+        this.npc1.setScale(2.2)
+        this.npc1.tint = '0xff0000'
+        this.npc1.goingDown = true;
+        this.physics.add.overlap(this.npc1,this.player,this.collideWithNpc)
+        
+        this.npc2= this.physics.add.sprite(345,160,"hero")
+        this.npc2.setScale(2.2)
+        this.npc2.tint = '0xff0000'
 
+
+        this.npc3= this.physics.add.sprite(472,160,"hero")
+        this.npc3.setScale(2.2)
+        this.npc3.tint = '0xff0000'
+
+    }
+    collideWithNpc(npc,play){
+        console.log("damn")
+        play.disableBody(true,true)
+    }
     collideWithDoor(player,door){
     }
     collideWithButton(player,btn){
@@ -139,6 +158,21 @@ export class Level4Scene extends Phaser.Scene {
         }
         ///Common Player Setup Ends
 
+
+        ///NPC STUFFF
+        if(this.npc1.goingDown){
+            this.npc1.y+=3
+        }else{
+            this.npc1.y-=3;
+        }
+        if(this.npc1.y > 500){
+            this.npc1.goingDown = false
+            this.npc1.anims.play('up',true)
+        } else if(this.npc1.y<150){
+            this.npc1.goingDown=true
+            this.npc1.anims.play('down',true)
+
+        }
     }   
 
 }
