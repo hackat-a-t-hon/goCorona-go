@@ -19,6 +19,11 @@ export class Level3Scene extends Phaser.Scene {
         this.text = "open the hest"
         this.killers
         this.gameOver = false
+        this.timerOver = false
+        this.timer
+        this.time = 0
+        this.initialTime
+        this.timeText = ''
 
     }
 
@@ -31,11 +36,25 @@ export class Level3Scene extends Phaser.Scene {
         this.load.image('safe_open', safe_open);
         this.load.image('safe_ajar', safe_ajar);
         // this.load.spritesheet('stand', swim_stand, { frameWidth: 16, frameHeight: 24});
-        this.load.spritesheet('swim', swim, { frameWidth: 24, frameHeight: 25})
+        this.load.spritesheet('swim', swim, { frameWidth: 24, frameHeight: 24})
 
     }
 
     create(){
+        // this.timer = this.game.time.create(false)
+        // this.timer.loop(1000, updateCounter, this)
+
+       
+        // this.timeText = this.add.text(400, 300, `${this.time} Sec`, { fontSize: '24px', fill: '#000' });
+
+        this.initialTime = 10;
+
+ 
+    // this.timeText = this.add.text(400, 300, 'Countdown: ' + this.formatTime(this.initialTime), { fontSize: '24px', fill: '#000' });
+
+    // Each 1000 ms call onEvent
+    this.timedEvent = this.time.addEvent({ delay: 1000, callback: this.onEvent, callbackScope: this, loop: true });
+
         this.anims.create({
             key: 'open-safe',
             frames: [
@@ -119,13 +138,13 @@ export class Level3Scene extends Phaser.Scene {
 
         this.killers = this.physics.add.group({
             key: 'killer',
-            repeat: Math.max(Math.floor(Math.random()*4) + 1, 3),
-            setXY: {x: -50, y:20, stepY: Math.min(Math.random()*200,100)}
+            repeat: Math.max(Math.floor(Math.random()*3) + 1, 2),
+            setXY: {x: -50, y:Math.random() * 11, stepY: Math.min(Math.random()*300,200)}
         })
      
         this.killers.children.iterate(function(child){
             child.setBounceX(Phaser.Math.FloatBetween(0.5,0.9))
-            child.setScale( Math.max(Math.random() - 0.2),0.5)
+            child.setScale(0.5)
             // child.body.collideWorldBounds=true;
         })
 
@@ -152,21 +171,58 @@ export class Level3Scene extends Phaser.Scene {
         this.physics.add.overlap(this.player, this.hest,this.openHest, null, this);
 
         this.text = this.add.text(16, 16, 'Open The Hest', { fontSize: '24px', fill: '#000' });
-
-        console.log(this.killers)
+        // this.timeText = this.add.text(32, 32, 'Countdown: ' + this.formatTime(this.initialTime));
+        this.timeText = this.add.text(250, 490,'open in '+this.formatTime(this.initialTime), { fontSize: '18px', fill: '#000' });
+        // console.log(this.killers)
     }
+
+    formatTime(seconds){
+        // Minutes
+        var minutes = Math.floor(seconds/60);
+        // Seconds
+        var partInSeconds = seconds%60;
+        // Adds left zeros to seconds
+        partInSeconds = partInSeconds.toString().padStart(2,'0');
+        // Returns formated time
+        return `${minutes}:${partInSeconds}`;
+    }
+     onEvent ()
+{
+
+    this.initialTime -= 1; // One second
+
+    if(this.gameOver){
+        this.timeText.setText('');
+
+    }
+    else if(this.initialTime <= 0 && !this.gameOver){
+        this.timeText.setText('You can access the Treasure Now',{ fontSize: '24px', fill: '#FF0000' });
+
+    }
+    // if(this.initialTime <= 0 && this.gameOver){
+    //     this.timeText.setText('');
+
+    // }
+    else {
+
+        this.timeText.setText('open in '+this.formatTime(this.initialTime));
+    }
+}
+
+
 
     killerKissedMe(){
         console.log("killer killed me")
         this.text.setText('Oh crap You got killed.');
         this.player.setVelocityY(-100)
+        this.timeText.setText("");
         this.physics.pause();
         this.gameOver = true
 
     }
 
     openHest(){
-        if(!this.bubbleUp){
+        if(!this.bubbleUp && this.initialTime <= 0){
             console.log('i ran')
             let y;
             this.hest.anims.play('open-safe', true)
@@ -174,7 +230,9 @@ export class Level3Scene extends Phaser.Scene {
                 this.bubble.setPosition(this.bubble.x, this.bubble.y -= 2*i)
             }
             this.bubbleUp = true
+            this.timeText.setText("");
             this.text.setText('You Got the special ingredient. Well Done!');
+            this.gameOver = true
         }
     }
     update(){
@@ -187,7 +245,7 @@ export class Level3Scene extends Phaser.Scene {
         this.killers.children.iterate((child) => {
             if(child){
 
-                child.setVelocityX(Math.max(Math.random()*200, 10));
+                child.setVelocityX(Math.max(Math.random()*500, 10));
                 // console.log(this.frameHeight)
                 if(child.x >= 800){
                     this.killers.remove(child,true)
@@ -198,22 +256,34 @@ export class Level3Scene extends Phaser.Scene {
         if(this.killers.countActive() <= 2){
 
         if(!this.gameOver){
-
-            this.killers.children.iterate(function(child){
-                t.killers = t.physics.add.group({
-                    key: 'killer',
-                    repeat: Math.max(Math.floor(Math.random()*5) + 1, 3),
-                    setXY: {x: -50, y:10, stepY: Math.min(Math.random()*500,300)},
-                    setScale: {
-                        x: Math.random(),y: Math.random()
-                    }
-                })
-                // child.setBounceX(Phaser.Math.FloatBetween(0.5,0.9))
-                // child.setScale(0.5)
-                t.physics.add.overlap(t.player, t.killers, t.killerKissedMe, null, t)
-    
-                // child.body.collideWorldBounds=true;
+            let rand = Math.max(Math.random(),0.5)
+            t.killers = t.physics.add.group({
+                key: 'killer',
+                repeat: Math.max(Math.floor(Math.random()*3) + 1, 2),
+                setXY: {x: -50, y:Math.random() * 11, stepY: Math.min(Math.random()*500,300)},
+                setScale: {
+                    x: rand,y:rand
+                }
             })
+            // child.setBounceX(Phaser.Math.FloatBetween(0.5,0.9))
+            // child.setScale(0.5)
+            t.physics.add.overlap(t.player, t.killers, t.killerKissedMe, null, t)
+
+            // this.killers.children.iterate(function(child){
+            //     t.killers = t.physics.add.group({
+            //         key: 'killer',
+            //         repeat: Math.max(Math.floor(Math.random()*5) + 1, 3),
+            //         setXY: {x: -50, y:10, stepY: Math.min(Math.random()*500,300)},
+            //         setScale: {
+            //             x: Math.random(),y: Math.random()
+            //         }
+            //     })
+            //     // child.setBounceX(Phaser.Math.FloatBetween(0.5,0.9))
+            //     // child.setScale(0.5)
+            //     t.physics.add.overlap(t.player, t.killers, t.killerKissedMe, null, t)
+    
+            //     // child.body.collideWorldBounds=true;
+            // })
             }
         }
         // this.killers.children.iterate(function(child){
