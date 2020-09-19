@@ -14,7 +14,9 @@ const config = {
   parent: "phaser-example",
   width: 800,
   height: 600,
-  scene: [Level4Scene]
+  scene: [Level4Scene],
+  physics:'arcade'
+  
 };
 
 const game = new Phaser.Game(config);
