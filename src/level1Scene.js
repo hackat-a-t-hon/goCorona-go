@@ -28,8 +28,6 @@ export class Level1Scene extends Phaser.Scene {
     }
 
     create(){
-        console.log("motu chutiya hai");
-
        ///Common Player Setup Starts
        this.anims.create({
         key: 'right',
@@ -89,7 +87,23 @@ export class Level1Scene extends Phaser.Scene {
     this.door.body.immovable = true
     button.body.immovable = true
     this.cursors = this.input.keyboard.createCursorKeys();
+    this.npc1= this.physics.add.sprite(140,120,"hero")
+    this.npc1.setScale(2.2)
+    this.npc1.tint = '0xff0000'
+    this.npc1.goingDown = true;
+    this.physics.add.overlap(this.npc1,this.player,this.collideWithNpc)
+    
+    this.npc2= this.physics.add.sprite(345,160,"hero")
+    this.npc2.setScale(2.2)
+    this.npc2.tint = '0xff0000'
+
+
+    this.npc3= this.physics.add.sprite(472,160,"hero")
+    this.npc3.setScale(2.2)
+    this.npc3.tint = '0xff0000'
+
     }
+    
     update (){
         ///Common Player Setup Starts
         if(this.cursors.left.isDown){
@@ -109,6 +123,46 @@ export class Level1Scene extends Phaser.Scene {
             this.player.anims.stop()
         }
         ///Common Player Setup Ends
+        if(this.npc1.goingDown){
+            this.npc1.y+=3
+        }else{
+            this.npc1.y-=3;
+        }
+        if(this.npc1.y > 500){
+            this.npc1.goingDown = false
+            this.npc1.anims.play('up',true)
+        } else if(this.npc1.y<150){
+            this.npc1.goingDown=true
+            this.npc1.anims.play('down',true)
+
+        }
+        if(this.npc2.goingDown){
+            this.npc2.y+=3
+        }else{
+            this.npc2.y-=3;
+        }
+        if(this.npc2.y > 500){
+            this.npc2.goingDown = false
+            this.npc2.anims.play('up',true)
+        } else if(this.npc2.y<150){
+            this.npc2.goingDown=true
+            this.npc2.anims.play('down',true)
+
+        }
+        if(this.npc3.goingDown){
+            this.npc3.y+=3
+        }else{
+            this.npc3.y-=3;
+        }
+        if(this.npc3.y > 500){
+            this.npc3.goingDown = false
+            this.npc3.anims.play('up',true)
+        } else if(this.npc3.y<150){
+            this.npc3.goingDown=true
+            this.npc3.anims.play('down',true)
+
+        }
+
     }
 
 }
