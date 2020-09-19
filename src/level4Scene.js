@@ -14,6 +14,7 @@ export class Level4Scene extends Phaser.Scene {
 
 
     preload(){
+        console.log("motu chutiya hai");
 
         this.load.image('tiles',tiles);
         this.load.tilemapTiledJSON("map",map,null,Phaser.Tilemaps.Tilemap.TILED_JSON)
@@ -28,6 +29,8 @@ export class Level4Scene extends Phaser.Scene {
     }
 
     create(){
+        console.log("motu chutiya hai");
+
 
 
         ///Common Player Setup Starts
