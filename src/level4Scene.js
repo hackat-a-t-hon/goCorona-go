@@ -2,7 +2,9 @@ import Phaser, { Physics } from 'phaser'
 import back from './assets/imageedit_2_5379813542.png'
 import DOOR from './assets/door.png'
 import button from './assets/set.png'
+import potion from './assets/flask.png'
 import map from './assets/Level4.json'
+import backMusic from './game_music.ogg'
 //Common Player Character import 
 import Charcater from './assets/hero.png'
 import tiles from './assets/imageedit_2_5379813542.png'
@@ -24,12 +26,13 @@ export class Level4Scene extends Phaser.Scene {
         this.load.image('btn',button)
         this.load.image('background',back)
         this.load.image('door', DOOR);
-    
+        this.load.image('med',potion);
+        this.load.audio('backM',backMusic)
     }
 
     create(){
 
-
+        let music = this.game.add.audio
         ///Common Player Setup Starts
         this.anims.create({
             key: 'right',
@@ -104,16 +107,37 @@ export class Level4Scene extends Phaser.Scene {
         this.npc2= this.physics.add.sprite(345,160,"hero")
         this.npc2.setScale(2.2)
         this.npc2.tint = '0xff0000'
+        this.npc2.goingRight = true;
+        this.physics.add.overlap(this.npc2,this.player,this.collideWithNpc)
 
 
-        this.npc3= this.physics.add.sprite(472,160,"hero")
+        this.npc3= this.physics.add.sprite(532,240,"hero")
         this.npc3.setScale(2.2)
         this.npc3.tint = '0xff0000'
-
+        this.npc3.goingDown = false;
+        this.physics.add.overlap(this.npc3,this.player,this.collideWithNpc)
+        this.rest= false
+        ///Potions
+        let meds = this.physics.add.image(750,80,'med').setScale(1.2)        
+        meds.body.immovable = true
+        this.physics.add.collider(this.player,meds,this.gameComplete,null,this)
+   
+        //Text
+        this.text = this.add.text(26, 26, 'Get The Last Ingredient For The Vaccine', { fontSize: '24px', fill: '#fff' }).setDepth(5);
+        // this.timeText = this.add.text(32, 32, 'Countdown: ' + this.formatTime(this.initialTime));
+       
     }
     collideWithNpc(npc,play){
         console.log("damn")
-        play.disableBody(true,true)
+        play.tint = "0xdd0000"
+        play.setRotation(-1.5)
+        play.rest = true
+    }
+    delayedCall(){
+        this.text.setColor("#ff0000")
+        this.player.tint = "#ff0000"
+        this.player.setRotation(-1.5)
+        this.text.setText("Unfortunately You Died\n So Silly")
     }
     collideWithDoor(player,door){
     }
@@ -133,8 +157,24 @@ export class Level4Scene extends Phaser.Scene {
         }
           }
   
+    gameComplete(player,flask){
+        flask.disableBody(true,true)
+        this.text.setOrigin(.5,.5)
+        this.text.setFontSize(38)
+        this.text.x = 400
+        
+        this.text.y=320
+        this.time.addEvent({ delay: 3000, callback: this.delayedCall, callbackScope: this, loop: false });
+        this.text.setText("Congratulations! \nYou Got All The Ingredients")
+        this.physics.pause()
+
+    }
 
     update() {
+        //TO RESTART THE SCENE
+        if(this.player.rest==true){
+            this.scene.restart()
+         }
 
         ///Common Player Setup Starts
         if(this.cursors.left.isDown){
@@ -158,9 +198,9 @@ export class Level4Scene extends Phaser.Scene {
 
         ///NPC STUFFF
         if(this.npc1.goingDown){
-            this.npc1.y+=3
+            this.npc1.y+=2
         }else{
-            this.npc1.y-=3;
+            this.npc1.y-=2;
         }
         if(this.npc1.y > 500){
             this.npc1.goingDown = false
@@ -170,6 +210,36 @@ export class Level4Scene extends Phaser.Scene {
             this.npc1.anims.play('down',true)
 
         }
+
+        if(!this.npc2.goingRight){
+            this.npc2.x-=2
+        }else{
+            this.npc2.x+=2;
+        }
+        if(this.npc2.x > 472){
+            this.npc2.goingRight = false
+            this.npc2.anims.play('left',true)
+        } else if(this.npc2.x<345){
+            this.npc2.goingRight=true
+            this.npc2.anims.play('right',true)
+
+        }
+
+        if(this.npc3.goingDown){
+            this.npc3.y+=2
+        }else{
+            this.npc3.y-=2;
+        }
+        if(this.npc3.y > 412){
+            this.npc3.goingDown = false
+            this.npc3.anims.play('up',true)
+        } else if(this.npc3.y<240){
+            this.npc3.goingDown=true
+            this.npc3.anims.play('down',true)
+
+        }
+        //Restart
+        
     }   
 
 }
