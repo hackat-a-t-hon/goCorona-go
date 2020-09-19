@@ -72,27 +72,48 @@ export class Level4Scene extends Phaser.Scene {
         this.player.setDepth(1)
         this.player.setCollideWorldBounds(true)
         ///Common Player Setup Ends
-        let button = this.physics.add.image(30,30,'btn')
+        let button = this.physics.add.image(190,490,'btn').setDepth(3)
+        button.setScale(2)
+        let button2 = this.physics.add.image(190,60,'btn').setDepth(3)
+        button2.setScale(3)
+        button2.tint = '0x00ff55'
+        button2.body.immovable = true
         let mappy = this.add.tilemap('map')
         let terrain = mappy.addTilesetImage("imageedit_2_5379813542","tiles");
         let botLayer = mappy.createStaticLayer("bottom",[terrain],0,0).setDepth(-1);
         let topLayer = mappy.createStaticLayer("top",[terrain],0,0).setDepth(0)
-        this.door = this.physics.add.image(700,590,'door').setScale(1.5)
+        this.door = this.physics.add.image(680,540,'door').setOrigin(0,0)
+        this.door.setScale(5.5)
+
         topLayer.setCollisionByProperty({collision:true})       
         this.physics.add.collider(this.player,button,this.collideWithButton,null,this)
+        this.physics.add.collider(this.player,button2,this.collideWithButton2,null,this)
         this.physics.add.collider(this.player,topLayer)
         this.physics.add.collider(this.player,this.door,this.collideWithDoor,null,this)
         this.door.body.immovable = true
         button.body.immovable = true
         this.cursors = this.input.keyboard.createCursorKeys();
+        
     }
 
     collideWithDoor(player,door){
     }
     collideWithButton(player,btn){
-        btn.x=-200
-        this.door.setDepth(-2)
+        btn.y=495
+        btn.tint = '0x8b0000'
+        this.doorOpen1 = true
+        this.door.setRotation(-1.5)
+        this.door.rotation = -1.5
+        this.door.x = 695
+        this.door.y = 559
     }
+    collideWithButton2(player,btn){
+        if(this.doorOpen1){
+          btn.tint = '0x00ff00'
+          this.door.disableBody(true,true)    
+        }
+          }
+  
 
     update() {
 
