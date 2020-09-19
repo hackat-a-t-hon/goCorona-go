@@ -47,7 +47,7 @@ export class Level3Scene extends Phaser.Scene {
        
         // this.timeText = this.add.text(400, 300, `${this.time} Sec`, { fontSize: '24px', fill: '#000' });
 
-        this.initialTime = 10;
+        this.initialTime = 60;
 
  
     // this.timeText = this.add.text(400, 300, 'Countdown: ' + this.formatTime(this.initialTime), { fontSize: '24px', fill: '#000' });
@@ -139,7 +139,7 @@ export class Level3Scene extends Phaser.Scene {
         this.killers = this.physics.add.group({
             key: 'killer',
             repeat: Math.max(Math.floor(Math.random()*3) + 1, 2),
-            setXY: {x: -50, y:Math.random() * 11, stepY: Math.min(Math.random()*300,200)}
+            setXY: {x: -50, y:50, stepY: Math.max(Math.random()*300,70)}
         })
      
         this.killers.children.iterate(function(child){
@@ -170,7 +170,7 @@ export class Level3Scene extends Phaser.Scene {
 
         this.physics.add.overlap(this.player, this.hest,this.openHest, null, this);
 
-        this.text = this.add.text(16, 16, 'Open The Hest', { fontSize: '24px', fill: '#000' });
+        this.text = this.add.text(16, 16, 'Open The Hest To get the  Ingredient', { fontSize: '20px', fill: '#000' });
         // this.timeText = this.add.text(32, 32, 'Countdown: ' + this.formatTime(this.initialTime));
         this.timeText = this.add.text(250, 490,'open in '+this.formatTime(this.initialTime), { fontSize: '18px', fill: '#000' });
         // console.log(this.killers)
@@ -213,7 +213,7 @@ export class Level3Scene extends Phaser.Scene {
 
     killerKissedMe(){
         console.log("killer killed me")
-        this.text.setText('Oh crap You got killed.');
+        this.text.setText('Oh crap, Corona kissed you, You should i worn a mask.',{ fontSize: '30px', fill: '#FF0000' });
         this.player.setVelocityY(-100)
         this.timeText.setText("");
         this.physics.pause();
@@ -244,10 +244,21 @@ export class Level3Scene extends Phaser.Scene {
 
         this.killers.children.iterate((child) => {
             if(child){
+                var num = Math.max(Math.floor(Math.random()*99) + 1,50); // this will get a number between 1 and 99;
+                num *= Math.floor(Math.random()*2) == 1 ? 1 : -1; 
 
-                child.setVelocityX(Math.max(Math.random()*500, 10));
+                child.setVelocityX(Math.max(num, 50));
+                child.setVelocityY(num)
                 // console.log(this.frameHeight)
+
+
                 if(child.x >= 800){
+                    this.killers.remove(child,true)
+                }
+                if(child.y >= 620){
+                    this.killers.remove(child,true)
+                }
+                if(child.y <= -10){
                     this.killers.remove(child,true)
                 }
             }
@@ -260,7 +271,7 @@ export class Level3Scene extends Phaser.Scene {
             t.killers = t.physics.add.group({
                 key: 'killer',
                 repeat: Math.max(Math.floor(Math.random()*3) + 1, 2),
-                setXY: {x: -50, y:Math.random() * 11, stepY: Math.min(Math.random()*500,300)},
+                setXY: {x: -50, y:50, stepY: Math.min(Math.random()*500,300)},
                 setScale: {
                     x: rand,y:rand
                 }
