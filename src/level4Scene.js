@@ -4,7 +4,6 @@ import DOOR from './assets/door.png'
 import button from './assets/set.png'
 import potion from './assets/flask.png'
 import map from './assets/Level4.json'
-import backMusic from './game_music.ogg'
 //Common Player Character import 
 import Charcater from './assets/hero.png'
 import tiles from './assets/imageedit_2_5379813542.png'
@@ -27,12 +26,10 @@ export class Level4Scene extends Phaser.Scene {
         this.load.image('background',back)
         this.load.image('door', DOOR);
         this.load.image('med',potion);
-        this.load.audio('backM',backMusic)
     }
 
     create(){
 
-        let music = this.game.add.audio
         ///Common Player Setup Starts
         this.anims.create({
             key: 'right',
