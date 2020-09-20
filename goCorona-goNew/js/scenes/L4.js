@@ -1,6 +1,6 @@
-class PlayGameScene extends Phaser.Scene {
+class Level4Scene extends Phaser.Scene {
     constructor() {
-        super('Play')
+        super('L4')
         this.score = 0;
     }
     preload() {
@@ -202,6 +202,7 @@ class PlayGameScene extends Phaser.Scene {
                 ///NPC STUFFF
                 if(this.npc1.goingDown){
                     this.npc1.y+=2
+                    
                 }else{
                     this.npc1.y-=2;
                 }
