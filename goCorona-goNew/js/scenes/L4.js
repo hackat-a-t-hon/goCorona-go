@@ -1,36 +1,25 @@
-import Phaser, { Physics } from 'phaser'
-import back from './assets/imageedit_2_5379813542.png'
-import DOOR from './assets/door.png'
-import button from './assets/set.png'
-import potion from './assets/flask.png'
-import map from './assets/Level4.json'
-import backM from './assets/game_music.mp3'
-//Common Player Character import 
-import Charcater from './assets/hero.png'
-import tiles from './assets/imageedit_2_5379813542.png'
-export class Level4Scene extends Phaser.Scene {
-    
-    constructor(){
-        super()        
+class PlayGameScene extends Phaser.Scene {
+    constructor() {
+        super('Play')
+        this.score = 0;
     }
+    preload() {
 
-
-    preload(){
-        this.load.audio('backSound',backM)
-        this.load.image('tiles',tiles);
-        this.load.tilemapTiledJSON("map",map,null,Phaser.Tilemaps.Tilemap.TILED_JSON)
+        this.load.image('tiles','./assets/imageedit_2_5379813542.png');
+        this.load.tilemapTiledJSON("map",'./assets/Level4.json',null,Phaser.Tilemaps.Tilemap.TILED_JSON)
         
         ///Common Player Setup Starts
-        this.load.spritesheet('hero',Charcater,{frameWidth:16,frameHeight:24})
+        this.load.spritesheet('hero','./assets/hero.png',{frameWidth:16,frameHeight:24})
         ///Common Player Setup Ends
-        this.load.image('btn',button)
-        this.load.image('background',back)
-        this.load.image('door', DOOR);
-        this.load.image('med',potion);
+        this.load.image('btn','./assets/set.png')
+        this.load.image('background','./assets/imageedit_2_5379813542.png')
+        this.load.image('door', './assets/door.png');
+        this.load.image('med','./assets/flask.png');
     }
 
-    create(){
-        console.log(this.game)
+    create() {
+
+
         ///Common Player Setup Starts
         this.anims.create({
             key: 'right',
@@ -69,7 +58,8 @@ export class Level4Scene extends Phaser.Scene {
             frameRate: 5,
             repeat: -1
         });
-        this.player = this.physics.add.sprite(5,80, 'hero').setScale(2)
+        // this.player = this.physics.add.sprite(5,80, 'hero').setScale(2)
+        this.player = this.physics.add.sprite(5,100, 'hero').setScale(2)
         this.player.setDepth(1)
         this.player.setCollideWorldBounds(true)
         ///Common Player Setup Ends
@@ -118,12 +108,14 @@ export class Level4Scene extends Phaser.Scene {
         ///Potions
         let meds = this.physics.add.image(750,80,'med').setScale(1.2)        
         meds.body.immovable = true
-        this.physics.add.collider(this.player,meds,this.gameComplete,null,this)
+        // this.physics.add.collider(this.player,meds,this.gameComplete,null,this)
+        this.physics.add.overlap(this.player, meds, this.gameComplete, null, this);
    
         //Text
         this.text = this.add.text(26, 26, 'Get The Last Ingredient For The Vaccine', { fontSize: '24px', fill: '#fff' }).setDepth(5);
         // this.timeText = this.add.text(32, 32, 'Countdown: ' + this.formatTime(this.initialTime));
        
+
     }
     collideWithNpc(npc,play){
         console.log("damn")
@@ -155,6 +147,7 @@ export class Level4Scene extends Phaser.Scene {
         }
           }
   
+          //Abhishek ka game Completion tha
     gameComplete(player,flask){
         flask.disableBody(true,true)
         this.text.setOrigin(.5,.5)
@@ -166,78 +159,90 @@ export class Level4Scene extends Phaser.Scene {
         this.text.setText("Congratulations! \nYou Got All The Ingredients")
         this.physics.pause()
 
+               this.endgame.play()
+               this.physics.pause();
+               this.player.setTint(0xff0000)
+               this.gameOver = true;
     }
 
+
     update() {
-        //TO RESTART THE SCENE
-        if(this.player.rest==true){
-            this.scene.restart()
-         }
-
-        ///Common Player Setup Starts
-        if(this.cursors.left.isDown){
-            this.player.setVelocity(-100,0)
-            this.player.anims.play('left',true)
-        } else if(this.cursors.right.isDown){
-            this.player.setVelocity(100,0)
-            this.player.anims.play('right',true)
-        } else if(this.cursors.up.isDown){
-            this.player.setVelocity(0,-100)            
-            this.player.anims.play('up',true)
-        } else if(this.cursors.down.isDown){
-            this.player.setVelocity(0,100)
-            this.player.anims.play('down',true)
-        } else{
-            this.player.setVelocity(0,0)
-            this.player.anims.stop()
-        }
-        ///Common Player Setup Ends
-
-
-        ///NPC STUFFF
-        if(this.npc1.goingDown){
-            this.npc1.y+=2
-        }else{
-            this.npc1.y-=2;
-        }
-        if(this.npc1.y > 500){
-            this.npc1.goingDown = false
-            this.npc1.anims.play('up',true)
-        } else if(this.npc1.y<150){
-            this.npc1.goingDown=true
-            this.npc1.anims.play('down',true)
-
+        if (this.gameOver && !this.gameComplete.isPlaying) {
+            this.scene.start('' 
+            // { totalScore: this.score }
+            )
         }
 
-        if(!this.npc2.goingRight){
-            this.npc2.x-=2
-        }else{
-            this.npc2.x+=2;
-        }
-        if(this.npc2.x > 472){
-            this.npc2.goingRight = false
-            this.npc2.anims.play('left',true)
-        } else if(this.npc2.x<345){
-            this.npc2.goingRight=true
-            this.npc2.anims.play('right',true)
-
-        }
-
-        if(this.npc3.goingDown){
-            this.npc3.y+=2
-        }else{
-            this.npc3.y-=2;
-        }
-        if(this.npc3.y > 412){
-            this.npc3.goingDown = false
-            this.npc3.anims.play('up',true)
-        } else if(this.npc3.y<240){
-            this.npc3.goingDown=true
-            this.npc3.anims.play('down',true)
-
-        }
-        //Restart
         
-    }   
-
+                //TO RESTART THE SCENE
+                if(this.player.rest==true){
+                    this.scene.restart()
+                 }
+        
+                ///Common Player Setup Starts
+                if(this.cursors.left.isDown){
+                    this.player.setVelocity(-100,0)
+                    this.player.anims.play('left',true)
+                } else if(this.cursors.right.isDown){
+                    this.player.setVelocity(100,0)
+                    this.player.anims.play('right',true)
+                } else if(this.cursors.up.isDown){
+                    this.player.setVelocity(0,-100)            
+                    this.player.anims.play('up',true)
+                } else if(this.cursors.down.isDown){
+                    this.player.setVelocity(0,100)
+                    this.player.anims.play('down',true)
+                } else{
+                    this.player.setVelocity(0,0)
+                    this.player.anims.stop()
+                }
+                ///Common Player Setup Ends
+        
+        
+                ///NPC STUFFF
+                if(this.npc1.goingDown){
+                    this.npc1.y+=2
+                }else{
+                    this.npc1.y-=2;
+                }
+                if(this.npc1.y > 500){
+                    this.npc1.goingDown = false
+                    this.npc1.anims.play('up',true)
+                } else if(this.npc1.y<150){
+                    this.npc1.goingDown=true
+                    this.npc1.anims.play('down',true)
+        
+                }
+        
+                if(!this.npc2.goingRight){
+                    this.npc2.x-=2
+                }else{
+                    this.npc2.x+=2;
+                }
+                if(this.npc2.x > 472){
+                    this.npc2.goingRight = false
+                    this.npc2.anims.play('left',true)
+                } else if(this.npc2.x<345){
+                    this.npc2.goingRight=true
+                    this.npc2.anims.play('right',true)
+        
+                }
+        
+                if(this.npc3.goingDown){
+                    this.npc3.y+=2
+                }else{
+                    this.npc3.y-=2;
+                }
+                if(this.npc3.y > 412){
+                    this.npc3.goingDown = false
+                    this.npc3.anims.play('up',true)
+                } else if(this.npc3.y<240){
+                    this.npc3.goingDown=true
+                    this.npc3.anims.play('down',true)
+        
+                }
+                //Restart
+                
+    }
+ 
 }

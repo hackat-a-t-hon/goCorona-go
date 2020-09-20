@@ -59,44 +59,22 @@ class PlayGameScene extends Phaser.Scene {
             repeat: -1
         });
         // this.player = this.physics.add.sprite(5,80, 'hero').setScale(2)
-        this.player = this.physics.add.sprite(700,100, 'hero').setScale(2)
+        this.player = this.physics.add.sprite(5,500, 'hero').setScale(2)
         this.player.setDepth(1)
         this.player.setCollideWorldBounds(true)
         ///Common Player Setup Ends
-        let button = this.physics.add.image(190,490,'btn').setDepth(3)
-        button.setScale(2)
-        let button2 = this.physics.add.image(190,60,'btn').setDepth(3)
-        button2.setScale(3)
-        button2.tint = '0x00ff55'
-        button2.body.immovable = true
         let mappy = this.add.tilemap('map')
         let terrain = mappy.addTilesetImage("imageedit_2_5379813542","tiles");
         let botLayer = mappy.createStaticLayer("bottom",[terrain],0,0).setDepth(-1);
         let topLayer = mappy.createStaticLayer("top",[terrain],0,0).setDepth(0)
-        this.door = this.physics.add.image(680,540,'door').setOrigin(0,0)
-        this.door.setScale(5.5)
+        topLayer.setOrigin(300,300)
+        topLayer.setScale(8)
 
         topLayer.setCollisionByProperty({collision:true})       
-        this.physics.add.collider(this.player,button,this.collideWithButton,null,this)
-        this.physics.add.collider(this.player,button2,this.collideWithButton2,null,this)
         this.physics.add.collider(this.player,topLayer)
-        this.physics.add.collider(this.player,this.door,this.collideWithDoor,null,this)
-        this.door.body.immovable = true
-        button.body.immovable = true
         this.cursors = this.input.keyboard.createCursorKeys();
         
         //NPC STUFF
-        this.npc1= this.physics.add.sprite(140,120,"hero")
-        this.npc1.setScale(2.2)
-        this.npc1.tint = '0xff0000'
-        this.npc1.goingDown = true;
-        this.physics.add.overlap(this.npc1,this.player,this.collideWithNpc)
-        
-        this.npc2= this.physics.add.sprite(345,160,"hero")
-        this.npc2.setScale(2.2)
-        this.npc2.tint = '0xff0000'
-        this.npc2.goingRight = true;
-        this.physics.add.overlap(this.npc2,this.player,this.collideWithNpc)
 
 
         this.npc3= this.physics.add.sprite(532,240,"hero")
@@ -106,13 +84,13 @@ class PlayGameScene extends Phaser.Scene {
         this.physics.add.overlap(this.npc3,this.player,this.collideWithNpc)
         this.rest= false
         ///Potions
-        let meds = this.physics.add.image(750,80,'med').setScale(1.2)        
+        let meds = this.physics.add.image(750,400,'med').setScale(1.2)        
         meds.body.immovable = true
         // this.physics.add.collider(this.player,meds,this.gameComplete,null,this)
         this.physics.add.overlap(this.player, meds, this.gameComplete, null, this);
    
         //Text
-        this.text = this.add.text(26, 26, 'Get The Last Ingredient For The Vaccine', { fontSize: '24px', fill: '#fff' }).setDepth(5);
+        this.text = this.add.text(26, 26, 'To Make A Vaccine Get To The First Ingredient', { fontSize: '24px', fill: '#fff' }).setDepth(5);
         // this.timeText = this.add.text(32, 32, 'Countdown: ' + this.formatTime(this.initialTime));
        
 
@@ -159,89 +137,20 @@ class PlayGameScene extends Phaser.Scene {
         // this.text.setText("Congratulations! \nYou Got All The Ingredients")
         // this.physics.pause()
 
-               // this.endgame.play()
+            //    this.endgame.play()
                this.physics.pause();
                this.player.setTint(0xff0000)
                this.gameOver = true;
     }
 
-    // endGame() {
-    //     // this.endgame.play()
-    //     this.physics.pause();
-    //     this.player.setTint(0xff0000)
-    //     this.gameOver = true;
-    // }
-
-    // collectCoins(jet, coin) {
-    //     this.coinHit.play()
-    //     coin.disableBody(true, true)
-    //     this.score += 10;
-    //     this.scoreText.setText('Score : ' + this.score);
-
-    //     let x = Phaser.Math.Between(0, config.width);
-    //     let y = Phaser.Math.Between(0, 200);
-    //     coin.enableBody(true, x, y, true, true)
-    //     let xVel = Phaser.Math.Between(-100, 100);
-    //     let yVel = Phaser.Math.Between(150, 200);
-    //     coin.setVelocity(xVel, yVel)
-    // }
-
-    // setObjVelocity(bombs) {
-    //     bombs.children.iterate(function (bomb) {
-    //         let x = Phaser.Math.Between(-100, 100);
-    //         let y = Phaser.Math.Between(150, 200);
-    //         bomb.setVelocity(x, y)
-    //     })
-    // }
-
-    // shoot() {
-    //     this.ammo = this.physics.add.image(this.jet.x, this.jet.y, 'ammo').setScale(0.1)
-    //     this.ammo.setRotation(-Phaser.Math.PI2 / 4);
-    //     this.ammo.setVelocityY(-600)
-    //     this.physics.add.collider(this.ammo, this.bombs, this.destroyBomb, null, this)
-    // }
-
-    // destroyBomb(ammo, bomb) {
-    //     this.gunShot.play()
-    //     this.explosion = this.add.sprite(bomb.x, bomb.y, 'explosion').setScale(4);
-    //     this.explosion.play('explode')
-    //     this.score += 5;
-    //     this.scoreText.setText('Score : ' + this.score);
-    //     this.ammo.disableBody(true, true)
-    //     bomb.disableBody(true, true)
-    //     let randomX = Phaser.Math.Between(15, config.width - 15)
-    //     bomb.enableBody(true, randomX, 0, true, true)
-    //     let x = Phaser.Math.Between(-100, 100);
-    //     let y = Phaser.Math.Between(150, 200);
-    //     bomb.setVelocity(x, y);
-    // }
 
     update() {
         if (this.gameOver && !this.gameComplete.isPlaying) {
-            this.scene.start('Level2' 
-            // { totalScore: this.score }
-            )
+            this.scene.start('Level2')
+            // { totalScore:this.score }
         }
 
-        // if (this.cursors.left.isDown) {
-        //     this.jet.setVelocityX(-150);
-        // } else if (this.cursors.right.isDown) {
-        //     this.jet.setVelocityX(150);
-        // } else {
-        //     this.jet.setVelocityX(0);
-        // }
-
-        // if (this.cursors.up.isDown) {
-        //     this.jet.setVelocityY(-150);
-        // } else if (this.cursors.down.isDown) {
-        //     this.jet.setVelocityY(150);
-        // } else {
-        //     this.jet.setVelocityY(0);
-        // }
-
-        // this.checkForRepos(this.bombs)
-        // this.checkForRepos(this.coins)
-
+        
                 //TO RESTART THE SCENE
                 if(this.player.rest==true){
                     this.scene.restart()
@@ -268,34 +177,7 @@ class PlayGameScene extends Phaser.Scene {
         
         
                 ///NPC STUFFF
-                if(this.npc1.goingDown){
-                    this.npc1.y+=2
-                }else{
-                    this.npc1.y-=2;
-                }
-                if(this.npc1.y > 500){
-                    this.npc1.goingDown = false
-                    this.npc1.anims.play('up',true)
-                } else if(this.npc1.y<150){
-                    this.npc1.goingDown=true
-                    this.npc1.anims.play('down',true)
-        
-                }
-        
-                if(!this.npc2.goingRight){
-                    this.npc2.x-=2
-                }else{
-                    this.npc2.x+=2;
-                }
-                if(this.npc2.x > 472){
-                    this.npc2.goingRight = false
-                    this.npc2.anims.play('left',true)
-                } else if(this.npc2.x<345){
-                    this.npc2.goingRight=true
-                    this.npc2.anims.play('right',true)
-        
-                }
-        
+     
                 if(this.npc3.goingDown){
                     this.npc3.y+=2
                 }else{
@@ -312,17 +194,5 @@ class PlayGameScene extends Phaser.Scene {
                 //Restart
                 
     }
-    // checkForRepos(bombs) {
-    //     let game = this;
-    //     bombs.children.iterate(function (bomb) {
-    //         if (bomb.y > config.height) {
-    //             game.resetPos(bomb);
-    //         }
-    //     })
-    // }
-    // resetPos(bomb) {
-    //     bomb.y = 0;
-    //     let randomX = Phaser.Math.Between(15, config.width - 15);
-    //     bomb.x = randomX;
-    // }
+ 
 }
