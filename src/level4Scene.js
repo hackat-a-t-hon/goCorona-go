@@ -4,6 +4,7 @@ import DOOR from './assets/door.png'
 import button from './assets/set.png'
 import potion from './assets/flask.png'
 import map from './assets/Level4.json'
+import backM from './assets/game_music.mp3'
 //Common Player Character import 
 import Charcater from './assets/hero.png'
 import tiles from './assets/imageedit_2_5379813542.png'
@@ -15,7 +16,7 @@ export class Level4Scene extends Phaser.Scene {
 
 
     preload(){
-
+        this.load.audio('backSound',backM)
         this.load.image('tiles',tiles);
         this.load.tilemapTiledJSON("map",map,null,Phaser.Tilemaps.Tilemap.TILED_JSON)
         
@@ -29,7 +30,7 @@ export class Level4Scene extends Phaser.Scene {
     }
 
     create(){
-
+        console.log(this.game)
         ///Common Player Setup Starts
         this.anims.create({
             key: 'right',

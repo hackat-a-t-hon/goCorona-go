@@ -4,6 +4,7 @@ import {MenuGameScene} from './menuGameScene'
 import {Level1Scene} from './level1Scene'
 import {Level2Scene} from './level2Scene'
 import {Level3Scene} from './level3Scene'
+import {startGameScene} from './startGameScene'
 import {Level4Scene} from './level4Scene'
 import {CreditsScene} from './creditsScene'
 
@@ -22,7 +23,7 @@ const config = {
             debug: false
         }
     },
-  scene: [Level4Scene]
+  scene: [Level2Scene]
 };
 
 const game = new Phaser.Game(config);
