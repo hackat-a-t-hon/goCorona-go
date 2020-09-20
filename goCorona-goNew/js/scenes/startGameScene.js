@@ -16,6 +16,6 @@ class StartGameScene extends Phaser.Scene {
     }
 
     startGame() {
-        this.scene.start('Play');
+        this.scene.start('Level3');
     }
 }

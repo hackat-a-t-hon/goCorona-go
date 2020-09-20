@@ -5,26 +5,21 @@ class Level3Scene extends Phaser.Scene {
         this.score = 0;
     }
     preload() {
-        // this.load.image('sky', 'assets/images/snowfloor.jpg');
-        // this.load.image('jet', 'assets/images/man21.png');
-        // this.load.image('tree', 'assets/images/tree.png');
-        // this.load.image('bigmountain', 'assets/images/newmont.png');
-        // this.load.image('snowTrees', 'assets/images/snowTrees.png');
+
         this.load.image('horse', 'assets/level2/images/horse.png');
         // this.load.image('snowTree', 'assets/images/snowTree.png');
-        this.load.image('box', 'assets/level2/images/box.png');
+        // this.load.image('box', 'assets/level2/images/box.png');
+        this.load.image('box', './assets/level3/hest_closed.png' );
 
         this.load.image('floor', 'assets/level2/images/snowfloor.jpg');
         this.load.image('man', 'assets/level2/images/man21.png');
         this.load.image('tree', 'assets/level2/images/tree.png');
         this.load.image('bigmountain', 'assets/level2/images/newmont.png');
         this.load.image('snowTrees', 'assets/level2/images/snowTrees.png');
+        this.load.image('snowTree', 'assets/level2/images/snowTree.png');
         
         this.load.audio('endgame', 'assets/audio/end.mp3')
-        // this.load.spritesheet('explosion', 'assets/spritesheets/explosion.png', {
-        //     frameWidth: 16,
-        //     frameHeight: 16
-        // })
+
     }
 
     create() {
@@ -36,38 +31,75 @@ class Level3Scene extends Phaser.Scene {
             }
         }
 
-        this.add.image(30,30,'tree').setScale(.5);
-        this.add.image(60,30,'tree').setScale(.5);
-        this.add.image(100,30,'tree').setScale(.5);
-        this.add.image(25,70,'tree').setScale(.5);
-        this.add.image(30,110,'tree').setScale(.5);
-        this.tree = this.physics.add.image(60, 115, 'tree').setScale(0.5)
+        this.tree = this.physics.add.image(60, 120, 'tree').setScale(0.5)
         this.tree.body.immovable = true;
 
-        this.treea = this.physics.add.image(88, 105, 'tree').setScale(0.5)
+        this.treea = this.physics.add.image(88, 125, 'tree').setScale(0.5)
         this.treea.body.immovable = true;
 
-        this.mountain = this.physics.add.image(200,100,'bigmountain').setScale(.5);
+        this.treeb = this.physics.add.image(30,30,'tree').setScale(.5);
+        this.treeb.body.immovable = true;
+
+        this.treec = this.physics.add.image(60,30,'tree').setScale(.5);
+        this.treec.body.immovable = true;
+
+        this.treed = this.physics.add.image(100,30,'tree').setScale(.5);
+        this.treed.body.immovable = true;
+
+        this.treee = this.physics.add.image(25,70,'tree').setScale(.5);
+        this.treee.body.immovable = true;
+
+        this.treef = this.physics.add.image(30,110,'tree').setScale(.5);
+        this.treef.body.immovable = true;
+
+        this.mountain = this.physics.add.image(270,100,'bigmountain').setScale(.5);
         this.mountain.body.immovable = true;
 
         this.mountaina = this.physics.add.image(100,210,'bigmountain').setScale(.5);
         this.mountaina.body.immovable = true;
 
-        this.add.image(300,100,'bigmountain').setScale(.5);
-        this.add.image(400,100,'bigmountain').setScale(.5);
-        this.add.image(500,100,'bigmountain').setScale(.5);
-        this.add.image(700,100,'bigmountain').setScale(.5);
+        this.mountainc = this.physics.add.image(400,100,'bigmountain').setScale(.5);
+        this.mountainc.body.immovable = true;
 
-        this.snowTrees =  this.physics.add.image(400,300,'snowTrees').setScale(.5);
+        this.mountainb = this.physics.add.image(335,120,'bigmountain').setScale(.5);
+        this.mountainb.body.immovable = true;
+
+
+        this.mountaind = this.physics.add.image(500,100,'bigmountain').setScale(.5);
+        this.mountaind.body.immovable = true;
+
+        this.mountaine = this.physics.add.image(700,100,'bigmountain').setScale(.5);
+        this.mountaine.body.immovable = true;
+
+        this.mountainf = this.physics.add.image(280,430,'bigmountain').setScale(.5);
+        this.mountainf.body.immovable = true;
+
+        this.snowTrees =  this.physics.add.image(400,280,'snowTrees').setScale(.5);
         this.snowTrees.body.immovable = true;
 
         this.snowTree =  this.physics.add.image(400,300,'snowTree');
         this.snowTree.body.immovable = true;
 
-        this.horse =  this.physics.add.image(500,600,'horse').setScale(1.5);
+        this.snowTreea =  this.physics.add.image(340,590,'snowTree');
+        this.snowTreea.body.immovable = true;
+        this.snowTreeb =  this.physics.add.image(660,540,'snowTree');
+        this.snowTreeb.body.immovable = true;
+        this.snowTreeba =  this.physics.add.image(680,530,'snowTree');
+        this.snowTreeba.body.immovable = true;
+        this.snowTreebb =  this.physics.add.image(640,510,'snowTree');
+        this.snowTreebb.body.immovable = true;
+        this.snowTreebc =  this.physics.add.image(635,480,'snowTree');
+        this.snowTreebc.body.immovable = true;
+
+        this.snowTreec =  this.physics.add.image(40,590,'snowTree');
+        this.snowTreec.body.immovable = true;
+        this.snowTreed =  this.physics.add.image(65,565,'snowTree');
+        this.snowTreed.body.immovable = true;
+
+        this.horse =  this.physics.add.image(560,120,'horse').setScale(1.5);
         this.horse.body.immovable = true;
 
-        this.box =  this.physics.add.image(70,80,'box').setScale(.5);
+        this.box =  this.physics.add.image(72,75,'box').setScale(.15);
         this.box.body.immovable = true;
 
         this.man = this.physics.add.image(780, 600, 'man').setScale(1.5).setOrigin(0.5, 0)
@@ -80,10 +112,30 @@ class Level3Scene extends Phaser.Scene {
 
         //colliderjet
         this.physics.add.collider(this.man,this.box);
+        this.physics.add.collider(this.man,this.tree);
+        this.physics.add.collider(this.man,this.treea);
+        this.physics.add.collider(this.man,this.treeb);
+        this.physics.add.collider(this.man,this.treec);
+        this.physics.add.collider(this.man,this.treed);
+        this.physics.add.collider(this.man,this.treee);
+        this.physics.add.collider(this.man,this.treef);
         this.physics.add.collider(this.man,this.mountain);
         this.physics.add.collider(this.man,this.mountaina);
+        this.physics.add.collider(this.man,this.mountainc);
+        this.physics.add.collider(this.man,this.mountainb);
+        this.physics.add.collider(this.man,this.mountaind);
+        this.physics.add.collider(this.man,this.mountaine);
+        this.physics.add.collider(this.man,this.mountainf);
         this.physics.add.collider(this.man,this.snowTrees);
         this.physics.add.collider(this.man,this.snowTree);
+        this.physics.add.collider(this.man,this.snowTreea);
+        this.physics.add.collider(this.man,this.snowTreeb);
+        this.physics.add.collider(this.man,this.snowTreeba);
+        this.physics.add.collider(this.man,this.snowTreebb);
+        this.physics.add.collider(this.man,this.snowTreebc);
+        this.physics.add.collider(this.man,this.snowTreec);
+        this.physics.add.collider(this.man,this.snowTreed);
+
         this.physics.add.collider(this.man,this.horse);
 
         this.cursors = this.input.keyboard.createCursorKeys();
