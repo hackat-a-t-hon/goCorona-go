@@ -47,7 +47,7 @@ class Level2Scene extends Phaser.Scene {
        
         // this.timeText = this.add.text(400, 300, `${this.time} Sec`, { fontSize: '24px', fill: '#000' });
 
-        this.initialTime = 5;
+        this.initialTime = 30;
 
  
     // this.timeText = this.add.text(400, 300, 'Countdown: ' + this.formatTime(this.initialTime), { fontSize: '24px', fill: '#000' });
@@ -239,9 +239,9 @@ class Level2Scene extends Phaser.Scene {
             this.bubbleUp = true
             this.timeText.setText("");
             this.text.setText('You Got the special ingredient. Well Done!');
-            this.gameOver = true
+            // this.gameOver = true
 
-            this.scene.add("L4")
+        
         }
     }
     update(){
@@ -250,8 +250,12 @@ class Level2Scene extends Phaser.Scene {
         // })
         let t = this
 
-        if (this.gameOver || this.bubbleUp) {
-            this.scene.start('L4')
+        if (this.bubbleUp) {
+            this.scene.start('Level3')
+        }
+        if(this.gameOver){
+            this.gameOver = false
+            this.scene.start('StartGame')
         }
 
        
