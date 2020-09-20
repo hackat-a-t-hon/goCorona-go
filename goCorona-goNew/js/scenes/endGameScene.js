@@ -13,6 +13,9 @@ class EndGameScene extends Phaser.Scene {
 
     create() {
         this.add.image(400, 300, 'end-game').setScale(0.7)
-        this.add.text(180, 50, 'Your Score : ' + this.score, { fontSize: 48 })
-    }
+        if(this.score)
+            this.add.text(180, 50, 'Your Score : ' + this.score, { fontSize: 48 })
+        else  this.add.text(70, 30, 'You Silly SILLY Person\n Your Vaccine Didnt Work', { fontSize: 38 })
+            
+        }
 }

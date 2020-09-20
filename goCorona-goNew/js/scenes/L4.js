@@ -128,7 +128,9 @@ class Level4Scene extends Phaser.Scene {
         this.player.tint = "#ff0000"
         this.player.setRotation(-1.5)
         this.text.setText("Unfortunately You Died\n So Silly")
-    }
+        this.gameOver = true;
+        
+      }
     collideWithDoor(player,door){
     }
     collideWithButton(player,btn){
@@ -159,16 +161,15 @@ class Level4Scene extends Phaser.Scene {
         this.text.setText("Congratulations! \nYou Got All The Ingredients")
         this.physics.pause()
 
-               this.endgame.play()
+            //    this.endgame.play()
                this.physics.pause();
                this.player.setTint(0xff0000)
-               this.gameOver = true;
     }
 
 
     update() {
         if (this.gameOver && !this.gameComplete.isPlaying) {
-            this.scene.start('' 
+            this.scene.start('EndGame' 
             // { totalScore: this.score }
             )
         }
