@@ -1,3 +1,12 @@
+// import BG from './assets/level3/underWater.png'
+// import bubble from './assets/level3/Bubble_3.png'
+// import killer from './assets/level3/killer.png'
+// import safe_closed from './assets/level3/hest_closed.png'
+// import safe_open from './assets/level3/hest_open.png'
+// import safe_ajar from './assets/level3/hest_ajar.png'
+// import swim_stand from './assets/level3/swim_stand.png'
+// import swim from './assets/level3/swim.png'
+
 class Level2Scene extends Phaser.Scene {
 
     constructor(){
@@ -23,7 +32,7 @@ class Level2Scene extends Phaser.Scene {
         this.load.image('ocean', './assets/level3/underWater.png' );
         this.load.image('bubble', './assets/level3/Bubble_3.png' );
         this.load.image('killer', './assets/level3/killer.png' );
-        this.load.image('safe_closed', './assets/level3/hest_closed.png' );
+        this.load.image('safe_closed',  './assets/level3/hest_closed.png' );
         this.load.image('safe_open', './assets/level3/hest_open.png');
         this.load.image('safe_ajar', './assets/level3/hest_ajar.png');
         // this.load.spritesheet('stand', swim_stand, { frameWidth: 16, frameHeight: 24});
@@ -38,7 +47,7 @@ class Level2Scene extends Phaser.Scene {
        
         // this.timeText = this.add.text(400, 300, `${this.time} Sec`, { fontSize: '24px', fill: '#000' });
 
-        this.initialTime = 60;
+        this.initialTime = 5;
 
  
     // this.timeText = this.add.text(400, 300, 'Countdown: ' + this.formatTime(this.initialTime), { fontSize: '24px', fill: '#000' });
@@ -165,17 +174,8 @@ class Level2Scene extends Phaser.Scene {
         // this.timeText = this.add.text(32, 32, 'Countdown: ' + this.formatTime(this.initialTime));
         this.timeText = this.add.text(250, 490,'open in '+this.formatTime(this.initialTime), { fontSize: '18px', fill: '#000' });
         // console.log(this.killers)
-
-        //kp going to next level
-        this.physics.add.overlap(this.player, this.hest, this.gameComplete, null, this);
     }
-    gameComplete(){
 
-               // this.endgame.play()
-               this.physics.pause();
-               this.player.setTint(0xff0000)
-               this.gameOver = true;
-    }
     formatTime(seconds){
         // Minutes
         var minutes = Math.floor(seconds/60);
@@ -218,6 +218,13 @@ class Level2Scene extends Phaser.Scene {
         this.timeText.setText("");
         this.physics.pause();
         this.gameOver = true
+        // setTimeout(() => {
+        // this.scene.restart()
+        // this.scene.add("Level2")
+        // },2000)
+
+
+       
 
     }
 
@@ -233,24 +240,21 @@ class Level2Scene extends Phaser.Scene {
             this.timeText.setText("");
             this.text.setText('You Got the special ingredient. Well Done!');
             this.gameOver = true
+
+            this.scene.add("L4")
         }
     }
     update(){
         // this.physics.world.on('worldbounds', function(body){
         //     body.disableBody(true,true)
         // })
-
-        //going to next level by kp
-        if (this.gameOver && !this.gameComplete.isPlaying) {
-            this.scene.start('Level3' 
-            // { totalScore: this.score }
-            )
-        }
-        //end of going to next level
-
         let t = this
 
+        if (this.gameOver || this.bubbleUp) {
+            this.scene.start('L4')
+        }
 
+       
         this.killers.children.iterate((child) => {
             if(child){
                 var num = Math.max(Math.floor(Math.random()*99) + 1,50); // this will get a number between 1 and 99;
